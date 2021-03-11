@@ -13,7 +13,7 @@ export default function Home({ posts }) {
         {posts.map((post) => {
           const url = "/posts/" + post.id;
           return (
-            <div className="post">
+            <div className="post" key={post.id}>
               <Link href={url}>
                 <a>
                   <h2>{post.title}</h2>
