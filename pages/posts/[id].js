@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout";
 
-export default function firstPost({ sPost }) {
+export default function FirstPost({ sPost }) {
   const router = useRouter();
   const [cPost, setCPost] = useState(null);
   useEffect(() => {
     if (sPost === null) {
+      console.log()
       fetch(`https://jsonplaceholder.typicode.com/posts/${router.query.id}`)
         .then((res) => res.json())
         .then((res) => setCPost(res));
@@ -46,25 +47,24 @@ export default function firstPost({ sPost }) {
 
 // This gets called on every request
 // We can also use getStaticProps instead of getServerSideProps if we don't need the updated data on each request
-export async function getServerSideProps(context) {
+FirstPost.getInitialProps = async (context) => {
   // get the params
   // we can have the following props from context
   // params, req, res, query, preview, previewData, resolvedUrl, locale, locales, defaultLocale
   // req - have request object that client computer sends to server.
-  if (typeof window === "undefined") {
+  const { query } = context;
+  if (typeof window != "undefined") {
     return {
-      props: {
-        sPost: null,
-      },
+      sPost: null,
+      query,
     };
   }
-  const { params } = context;
   // Fetch data from external API
   const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${params.id}`
+    `https://jsonplaceholder.typicode.com/posts/${query.id}`
   );
   const post = await res.json();
 
   // Pass data to the page via props
-  return { props: { sPost: post } };
-}
+  return { sPost: post, query };
+};
