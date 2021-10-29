@@ -47,6 +47,8 @@ export default function FirstPost({ sPost }) {
 
 // This gets called on every request
 // We can also use getStaticProps instead of getServerSideProps if we don't need the updated data on each request
+// We are using getInitialProps to render the page from the server if the page reloads or accessed through the url directly
+// if we navigate through client side then it will behave as SPA Page
 FirstPost.getInitialProps = async (context) => {
   // get the params
   // we can have the following props from context
